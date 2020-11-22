@@ -1,0 +1,152 @@
+﻿<div class="container" ng-controller="serviceCtrl">
+    @*INICIO DIV - panel panel-info*@
+    <div class="panel panel-info">
+        <div class="panel-heading">Lista de serviços</div>
+
+        <div class="panel-body">
+            <button type="button" class="btn btn-info" data-target="#AddService" data-toggle="modal">
+                <span class="glyphicon glyphicon-plus"></span>
+                Agendar novo serviço
+            </button>
+        </div>
+
+        <table class="table">
+            <thead style="background-color:darkgray">
+                <tr>
+                    <th>Id Serviço</th>
+                    <th>Descrição</th>
+                    <th>Data</th>
+                    <th>Tipo</th>
+                    <th style="text-align:justify">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="service in Services">
+                    <td>{{service.ServiceId}}</td>
+                    <td>{{service.Description}}</td>
+                    <td>{{service.Date}}</td>
+                    <td>{{service.Type}}</td>
+                    <td style="width:200px">
+                        <a href="#" 
+                           data-target="#UpdateService" 
+                           data-toggle="modal" 
+                           class="btn btn-success" 
+                           ng-click="updateServiceById(service)">
+                        <span class="glyphicon glyphicon-pencil" />
+                        </a>
+                        <a href="#" 
+                           data-target="#RemoveService" 
+                           data-toggle="modal" 
+                           class="btn btn-danger"
+                           id="btnRemove"
+                           ng-click="removeServiceById(service)">
+                        <span class="glyphicon glyphicon-trash" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        @*INICIO Modal para adicionar serviço*@
+        <div class="modal" id="AddService" role="dialog" data-target="#AddService">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="text-info">Novo serviço</h3>
+                    </div>
+                    <div class="modal-body" style="margin-left:20px">
+                        <form novalidate name="AddNewServiceForm">
+                            <div class="form-group">
+                                <input class="form-control" readonly="readonly" type="hidden" name="serviceId" placeholder="Id do serviço" />
+                                <div class="valid-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" 
+                                       type="text" 
+                                       name="description" 
+                                       ng-model="description"
+                                       required 
+                                       placeholder="Descrição do serviço" />
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control"
+                                       type="date"
+                                       name="date"
+                                       ng-model="date"
+                                       required
+                                       placeholder="Data" />
+                                        <span ng-show="AddNewServiceForm.date.$error.pattern">Informe uma data!</span>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="type" ng-model="type" required placeholder="Tipo do serviço" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="btnSave" data-dismiss="modal" ng-click="addService()">Agendar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearData()">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*FIM Modal para adicionar serviço*@
+
+        @*INICIO Modal para atualizar serviço*@
+        <div class="modal" role="dialog" id="UpdateService" data-target="#UpdateService">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="text-warning">Atualizar Serviço</h3>
+                    </div>
+                    <div class="modal-body" style="margin-left: 20px">
+                        <form name="UpdateForm">
+                            <div class="form-group">
+                                <input class="form-control" readonly="readonly" name="ServiceId" ng-model="UpdatedServiceId" type="hidden" placeholder="Id do Serviço" />
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="Description" ng-model="UpdatedDescription" type="text" placeholder="Descrição do serviço" />
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" name="Date" ng-model="UpdatedDate" type="text" placeholder="Data de agendamento" />
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input is-valid" id="Type" aria-describedby="coronga" required name="Type" ng-model="UpdatedType" type="text" placeholder="Tipo do serviço" />
+                                    <div id="coronga" class="invalid-feedback">MARILENE</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnUpdate" data-dismiss="modal" ng-click="updateService()">Atualizar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*FIM Modal para atualizar serviço*@
+
+        @*INICIO MODAL - Remover serviço agendado*@
+        <div class="modal" role="dialog" id="RemoveService">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="text-info">Tem certeza que deseja remover o serviço agendado?</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <p>Id do Serviço: {{UpdatedServiceId}}</p>
+                            <p>Descrição do serviço: {{UpdatedDescription}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="removeService(UpdatedServiceId)">Remover</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*FIM MODAL - Remover serviço agendado*@
+    </div>
+    @*FIM DIV - panel panel-info*@
+</div>
