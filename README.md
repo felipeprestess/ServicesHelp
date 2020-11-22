@@ -3,7 +3,7 @@ CRUD de agendamento de serviços - versão base
 
 # Tecnologias
 
-ASP MVC5 + EF + AngularJS
+ASP MVC 5 + EF + AngularJS
 
 # Introdução ao ASP.NET MVC 5
 
